@@ -12,4 +12,50 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap
 //= require_tree .
+
+
+
+
+$(document).ready(function(){
+  $('.explainer').tooltip()
+  $('#my-affix').affix({
+     offset: {
+       top: 850
+     , bottom: function () {
+         return (this.bottom = $('.footer').outerHeight(true))
+       }
+     }
+   })
+  $('body').scrollspy({ target: '.navbar-example' })
+  $('#home-nav').tooltip({
+    placement: 'bottom'
+  })
+  var blankEmail = "<div class='alert alert-danger'> Email can't be blank </div>"
+  var blankPhone = "<div class='alert alert-danger'> Phone # can't be blank </div>"
+  var errors = {phone: blankPhone, email:blankEmail}
+  $("#contact-form").on("submit", function(event){
+    event.preventDefault();
+    $(".alert").remove();
+    var $inputs = $("input");
+    var hasErrors = [];
+    $inputs.each(function(idx, input){
+      debugger
+      var $parent = $(input).parent().parent();
+      $parent.removeClass("has-error");
+      $parent.removeClass("has-success");
+      if(input.value === ""){
+        $parent.addClass("has-error");
+        hasErrors.push(errors[$(input).data("input")]);
+      } else {
+        $parent.addClass("has-success");
+      }
+    })
+    if(hasErrors.length > 0){
+      hasErrors.forEach(function(error){
+        $("#errors").prepend(error)
+      })
+    }
+  })
+})

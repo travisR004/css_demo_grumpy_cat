@@ -1,30 +1,79 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>NewAuthDemo</title>
+    <title>Ponzi Scheme for Mitt Romney's Hair'</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= csrf_meta_tags %>
   </head>
-  <body>
+  <body data-spy="scroll" data-target=".navbar-example">
+    <div class="container">
+      <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
 
-    <% if flash[:errors] %>
-    <ul style="color:red;text-shadow: 1px 1px 1px black;">
-      <% flash[:errors].each do |error| %>
-      <li><%= error %></li>
+         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mitts-nav-collapse">
+           <span class="sr-only"> Toggle Navigation</span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           </button>
+           <a class="navbar-brand" href="<%= root_url %>">Mitt's Ponzi</a>
+
+      </div>
+
+      <div class="collapse navbar-collapse" id="mitts-nav-collapse">
+        <ul class="nav navbar-nav">
+          <li title="Go back to the home page of the best site on the internet" id="home-nav" class="<%= "active" if params['action'] == 'home' %>"><%= link_to "Home", root_url %></li>
+          <li class="<%= "active" if params['action'] == 'about' %>"><%= link_to "About", about_url %></li>
+          <li class="<%= "active" if params['action'] == 'contact' %>"><%= link_to "Contact", contact_url %></li>
+
+          <% if signed_in? %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Profile", user_url(current_user) %></li>
+              <li><%= link_to "Sign Out", session_url, :method => :delete %></li>
+            </ul>
+          <% else %>
+          <li data-toggle='modal' data-target="#loginModal"><a href="#">Sign In</a></li>
+          <li><%= link_to "Sign up", new_user_url %></li>
+          <% end %>
+        </ul>
+
+        </div>
+
+
+      </nav>
+      </div>
+      <div class="container">
+      <% if flash[:errors] %>
+      <ul style="color:red;text-shadow: 1px 1px 1px black;">
+        <% flash[:errors].each do |error| %>
+        <li><%= error %></li>
+        <% end %>
+      </ul>
+      <br>
       <% end %>
-    </ul>
-    <br>
-    <% end %>
 
-    <% if signed_in? %>
-    <ul>
-      <li>Signed in as: <%= current_user.username %></li>
-      <li><%= button_to "Sign Out", session_url, :method => :delete %></li>
-    </ul>
-    <% else %>
-    <%= link_to "Sign In", new_session_url %> or
-    <%= link_to "Sign up", new_user_url %>
-    <% end %>
 
-    <%= yield %>
+
+
+      <%= yield %>
+    </div>
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Log In</h4>
+          </div>
+          <div class="modal-body">
+            <%= render 'sessions/login_form' %>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </body>
 </html>
